@@ -1,0 +1,22 @@
+/* usual reset */
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  margin: 0;
+  min-width: 500px;
+  min-height: 300px;
+  height: 100vh;
+
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+

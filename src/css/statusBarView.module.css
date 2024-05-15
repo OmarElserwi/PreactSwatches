@@ -1,0 +1,11 @@
+.statusBar {
+  height: 50px;
+  background-color: lightgrey;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-family: sans-serif;
+  color: black;
+  text-align: right;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <title>Swatches</title>
+  </head>
+
+  <body>
+    <div id="panel">
+      <div id="toolbar">
+        <button id="addButton">Add</button><button id="deleteButton">Delete</button>
+      </div>
+
+      <div id="editor">
+        <div id="coloredRect"></div>
+        <span id="form">
+          <div id="HueContainer" class="formContainer">
+            <label for="hueText">Hue</label>
+            <input id="hueText" type="number" class="textField" min="0" max="360" />
+            <input type="range" id="hueSlider" class="slider" min="0" max="360" />
+          </div>
+
+          <div id="SatContainer" class="formContainer">
+            <label for="satText">Sat</label>
+            <input id="satText" type="number" class="textField" min="0" max="100" />
+            <input type="range" id="satSlider" class="slider" min="0" max="100" />
+          </div>
+
+          <div id="LumContainer" class="formContainer">
+            <label for="lumText">Lum</label>
+            <input id="lumText" type="number" class="textField" min="0" max="100" />
+            <input type="range" id="lumSlider" class="slider" min="0" max="100" />
+          </div>
+        </span>
+      </div>
+      <div id="swatchList">
+        <span class="swatch">?</span>
+      </div>
+      <div id="statusBar">?</div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

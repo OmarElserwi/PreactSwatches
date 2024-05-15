@@ -1,0 +1,12 @@
+.root {
+    height: 50px;
+    width: 100%;
+    background-color: lightgrey;
+  }
+  
+  button {
+    width: 100px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  
