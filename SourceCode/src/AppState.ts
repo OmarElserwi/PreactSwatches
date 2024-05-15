@@ -17,8 +17,12 @@ export type swatch = {
 
 export const swatches = signal<swatch[]>([]);
 
-// function to convert hsl to rgb
-function hslToRgb(h: number, s: number, l: number): [r: number, g: number, b: number ] {
+// function to convert hsl to rgb. Generated from CoPilot almost completely
+function hslToRgb(
+  h: number,
+  s: number,
+  l: number
+): [r: number, g: number, b: number] {
   h /= 360;
   s /= 100;
   l /= 100;
@@ -26,30 +30,29 @@ function hslToRgb(h: number, s: number, l: number): [r: number, g: number, b: nu
   let r: number, g: number, b: number;
 
   if (s === 0) {
-      r = g = b = l; // achromatic
+    r = g = b = l; // achromatic
   } else {
-      const hue2rgb = (p: number, q: number, t: number) => {
-          if (t < 0) t += 1;
-          if (t > 1) t -= 1;
-          if (t < 1 / 6) return p + (q - p) * 6 * t;
-          if (t < 1 / 2) return q;
-          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-          return p;
-      };
+    const hue2rgb = (p: number, q: number, t: number) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
 
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-      const p = 2 * l - q;
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
 
-      r = hue2rgb(p, q, h + 1 / 3);
-      g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1 / 3);
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
   }
 
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-
-// function to convert rgb to hex
+// function to convert rgb to hex. Generated from CoPilot almost completely
 function rgbToHex(r: number, g: number, b: number): string {
   const componentToHex = (c: number): string => {
     const hex = c.toString(16);
@@ -59,7 +62,7 @@ function rgbToHex(r: number, g: number, b: number): string {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-// function to convert rgb to hsl
+// function to convert rgb to hsl. Generated from CoPilot almost completely
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
   r /= 255;
   g /= 255;
@@ -67,33 +70,35 @@ function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
 
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0, s, l = (max + min) / 2;
+  let h = 0,
+    s,
+    l = (max + min) / 2;
 
   if (max === min) {
-      h = s = 0; // achromatic
+    h = s = 0; // achromatic
   } else {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
-      switch (max) {
-          case r:
-              h = (g - b) / d + (g < b ? 6 : 0);
-              break;
-          case g:
-              h = (b - r) / d + 2;
-              break;
-          case b:
-              h = (r - g) / d + 4;
-              break;
-      }
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
 
-      h /= 6;
+    h /= 6;
   }
 
   return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
 }
 
-// function to convert hex to rgb
+// function to convert hex to rgb. Generated from CoPilot almost completely
 function hexToRgb(hex: string): [number, number, number] {
   // Remove '#' from the beginning of the hex string
   hex = hex.replace("#", "");
@@ -117,22 +122,20 @@ for (let i = 0; i < 10; i++) {
   const [r, g, b] = hslToRgb(hue, sat, lum);
   const hex = rgbToHex(r, g, b);
 
-  swatches.value.push({ index, hue, sat, lum, selected, red: r, green: g, blue: b, hex: hex });
+  swatches.value.push({
+    index,
+    hue,
+    sat,
+    lum,
+    selected,
+    red: r,
+    green: g,
+    blue: b,
+    hex: hex,
+  });
 }
 
 export const selected = signal<number>(0);
-
-// very simple unique id generator
-let nextId = 10;
-
-// mutations
-export const increment = () => {
-  count.value++;
-};
-
-export const decrement = () => {
-  count.value--;
-}
 
 export const addToSwatches = () => {
   count.value++;
@@ -142,7 +145,7 @@ export const addToSwatches = () => {
   const [r, g, b] = hslToRgb(hue, sat, lum);
   const hex = rgbToHex(r, g, b);
   const index = swatches.value.length;
-  
+
   swatches.value = [
     ...swatches.value,
     {
@@ -186,8 +189,7 @@ export const deleteSelectedSwatch = () => {
 
   // update swatches to force re-render
   swatches.value = [...swatches.value];
-  
-}
+};
 
 export const selectSwatch = (index: number) => {
   // deselect previously selected swatch
@@ -203,7 +205,7 @@ export const selectSwatch = (index: number) => {
 
   // update swatches to force re-render
   swatches.value = [...swatches.value];
-}
+};
 
 function updateRGBHexGivenHSL(hue: number, sat: number, lum: number) {
   const [r, g, b] = hslToRgb(hue, sat, lum);
@@ -243,54 +245,78 @@ export const updateHex = (hex: string) => {
   // update RGB HSL
   updateHSLRGBGivenHex(hex);
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateHue = (hue: number) => {
   swatches.value[selected.value].hue = hue;
 
   // update RGB hex
-  updateRGBHexGivenHSL(hue, swatches.value[selected.value].sat, swatches.value[selected.value].lum);
+  updateRGBHexGivenHSL(
+    hue,
+    swatches.value[selected.value].sat,
+    swatches.value[selected.value].lum
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateSat = (sat: number) => {
   swatches.value[selected.value].sat = sat;
 
   // update RGB hex
-  updateRGBHexGivenHSL(swatches.value[selected.value].hue, sat, swatches.value[selected.value].lum);
+  updateRGBHexGivenHSL(
+    swatches.value[selected.value].hue,
+    sat,
+    swatches.value[selected.value].lum
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateLum = (lum: number) => {
   swatches.value[selected.value].lum = lum;
 
   // update RGB hex
-  updateRGBHexGivenHSL(swatches.value[selected.value].hue, swatches.value[selected.value].sat, lum);
+  updateRGBHexGivenHSL(
+    swatches.value[selected.value].hue,
+    swatches.value[selected.value].sat,
+    lum
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateRed = (red: number) => {
   swatches.value[selected.value].red = red;
 
   // update HSL hex
-  updateHSLHexGivenRGB(red, swatches.value[selected.value].green, swatches.value[selected.value].blue);
+  updateHSLHexGivenRGB(
+    red,
+    swatches.value[selected.value].green,
+    swatches.value[selected.value].blue
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateGreen = (green: number) => {
   swatches.value[selected.value].green = green;
 
   // update HSL hex
-  updateHSLHexGivenRGB(swatches.value[selected.value].red, green, swatches.value[selected.value].blue);
+  updateHSLHexGivenRGB(
+    swatches.value[selected.value].red,
+    green,
+    swatches.value[selected.value].blue
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 export const updateBlue = (blue: number) => {
   swatches.value[selected.value].blue = blue;
 
   // update HSL hex
-  updateHSLHexGivenRGB(swatches.value[selected.value].red, swatches.value[selected.value].green, blue);
+  updateHSLHexGivenRGB(
+    swatches.value[selected.value].red,
+    swatches.value[selected.value].green,
+    blue
+  );
   swatches.value = [...swatches.value];
-}
+};
 
 selectSwatch(0);

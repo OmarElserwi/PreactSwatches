@@ -1,20 +1,12 @@
-import {
-    swatches,
-    selected,
-    updateHue,
-    updateSat,
-    updateLum,
-    updateRed,
-    updateGreen,
-    updateBlue,
-    updateHex,
-  } from "./AppState";
+import { swatches, selected, updateHex } from "./AppState";
 import { useEffect, useState } from "preact/hooks";
 import style from "./css/hexComponent.module.css";
- 
+
 export default function HexComponent() {
-  // local state for the input value
-  const [inputValue, setInputValue] = useState(swatches.value[selected.value].hex);
+  // local state for the input values
+  const [inputValue, setInputValue] = useState(
+    swatches.value[selected.value].hex
+  );
 
   // update local state when app state changes
   useEffect(() => {
@@ -22,7 +14,7 @@ export default function HexComponent() {
   }, [swatches.value]);
 
   // regex validation for hex
-    const isValid = (text: string) => /^#[0-9a-f]{6}$/i.test(text);
+  const isValid = (text: string) => /^#[0-9a-f]{6}$/i.test(text);
 
   // handler for input changes
   const handleInput = (e: Event) => {
@@ -32,22 +24,24 @@ export default function HexComponent() {
 
     // only if valid, update the app state
     if (isValid(newValue)) {
-        swatches.value[selected.value].hex = newValue;
-        updateHex(newValue);
+      swatches.value[selected.value].hex = newValue;
+      updateHex(newValue);
     }
   };
 
   return (
     <>
       <input
-        class = {style.hexField}
+        class={style.hexField}
         value={inputValue}
         type="text"
         onInput={handleInput}
         // always leave input field with valid value
         onChange={() => setInputValue(swatches.value[selected.value].hex)}
       />
-      {!isValid(inputValue) && <p class={style.invalid}>Invalid: must be valid hex colour</p>}
+      {!isValid(inputValue) && (
+        <p class={style.invalid}>Invalid: must be valid hex colour</p>
+      )}
     </>
   );
 }
